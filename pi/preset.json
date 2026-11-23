@@ -1,0 +1,17 @@
+{
+  "packages": [
+    "npm:@juicesharp/rpiv-ask-user-question@2.15.0",
+    "npm:@tmustier/pi-usage-extension@0.10.2",
+    "npm:@victor-software-house/pi-curated-themes@0.2.1",
+    "npm:pi-cc-extensions@1.0.21",
+    "npm:@gotgenes/pi-subagents@25.0.5",
+    "npm:pi-cursor-sdk@0.5.46"
+  ],
+  "appearance": {
+    "theme": "pewget-dark",
+    "hideThinkingBlock": true,
+    "tuiMode": "fullscreen",
+    "fullscreenScrollbar": "auto",
+    "showCacheMissNotices": true
+  }
+}
