@@ -14,6 +14,7 @@
 
 import type { ExtensionUIContext, Theme } from "@earendil-works/pi-coding-agent";
 import { type TUI, type TuiMouseEvent, truncateToWidth } from "@earendil-works/pi-tui";
+import { followTranscriptTail } from "../../shared/transcript-tail.ts";
 import { COLLAPSE_KEY_OFF, getMaxWidgetLines, resolveCollapseKey } from "./config.ts";
 import { selectHasActive, selectOverlayLayout, selectShowTaskIds, selectTodoCounts } from "./state/selectors.ts";
 import { getRenderState } from "./state/store.ts";
@@ -59,8 +60,10 @@ export class TodoOverlay {
 				WIDGET_KEY,
 				(tui, factoryTheme) => {
 					this.tui = tui;
+					const tail = followTranscriptTail(tui);
 					return {
-						render: (width: number) => this.renderWidget(this.uiCtx?.theme ?? factoryTheme, width),
+						dispose: tail.dispose,
+						render: (width: number) => tail.visible() ? this.renderWidget(this.uiCtx?.theme ?? factoryTheme, width) : [],
 						handleMouse: (event: TuiMouseEvent) => {
 							if (event.type !== "click" || event.button !== "left") return;
 							if (event.shift || event.alt || event.ctrl) return;

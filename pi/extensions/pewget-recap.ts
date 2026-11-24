@@ -1,5 +1,6 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { stripTerminalSequences, wrapTextWithAnsi } from "@earendil-works/pi-tui";
+import { followTranscriptTail } from "../shared/transcript-tail.ts";
 
 const KEY = "pewget-recap";
 const INTERVAL = 3;
@@ -61,15 +62,20 @@ function showRecap(ctx: ExtensionContext, recap: string | undefined) {
 		ctx.ui.setWidget(KEY, undefined);
 		return;
 	}
-	ctx.ui.setWidget(KEY, (_tui, theme) => ({
-		invalidate() {},
-		render(width) {
-			return width < 2 ? [] : wrapTextWithAnsi(
-				theme.fg("dim", "※ ") + theme.fg("accent", theme.bold("recap:")) + " " + theme.fg("muted", theme.italic(text)),
-				width,
-			);
-		},
-	}), { placement: "aboveEditor" });
+	ctx.ui.setWidget(KEY, (tui, theme) => {
+		const tail = followTranscriptTail(tui);
+		return {
+			dispose: tail.dispose,
+			invalidate() {},
+			render(width) {
+				if (!tail.visible() || width < 2) return [];
+				return wrapTextWithAnsi(
+					theme.fg("dim", "※ ") + theme.fg("accent", theme.bold("recap:")) + " " + theme.fg("muted", theme.italic(text)),
+					width,
+				);
+			},
+		};
+	}, { placement: "aboveEditor" });
 }
 
 export default function (pi: ExtensionAPI) {

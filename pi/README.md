@@ -1,6 +1,6 @@
 # Pewget Pi
 
-A shareable Pi setup with a custom footer, session recap, editor stash, todo list, and two themes.
+A shareable Pi setup with a custom footer, session recap, editor stash, todo list, and two themes. In fullscreen, Todo and Recap hide when you scroll away from the end and reappear when you return.
 
 ## Extensions and themes only
 
